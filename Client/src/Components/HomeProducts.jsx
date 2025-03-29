@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative bg-[url('/images/airmax.jpg')] bg-cover bg-center h-96 m-6 flex items-center justify-center text-center px-6">
+      <div className="relative bg-[url(`${import.meta.env.BASE_URL}/images/airmax.jpg`)] bg-cover bg-center h-96 m-6 flex items-center justify-center text-center px-6">
         <div className="">
           <h1 className="text-5xl font-bold text-orange-500">
             Welcome to Our Exclusive Collection

@@ -6,12 +6,14 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative bg-[url(`${import.meta.env.BASE_URL}/images/airmax.jpg`)] bg-cover bg-center h-96 m-6 flex items-center justify-center text-center px-6">
+      <div style={{
+    backgroundImage: `url('${import.meta.env.BASE_URL}/images/airmax.jpg')`,
+  }} className="relative bg-cover bg-center h-96 m-6 flex items-center justify-center text-center px-6">
         <div className="">
-          <h1 className="text-5xl font-bold text-orange-500">
+          <h1 className="text-4xl font-bold text-gray-900">
             Welcome to Our Exclusive Collection
           </h1>
-          <p className="text-2xl text-gray-200 mt-4">
+          <p className="text-2xl text-gray-600 mt-4">
             Discover premium quality footwear designed for style and comfort.
           </p>
           <button className="mt-6 bg-orange-500 text-white py-3 px-6 rounded-full text-lg hover:bg-orange-600">
@@ -23,7 +25,7 @@ const Home = () => {
       {/* About Us Section */}
       <div className="py-16 px-10 text-center">
         <h2 className="text-5xl font-bold text-gray-800">Who We Are</h2>
-        <p className="text-2xl text-justify text-gray-600 mt-4 max-w-2xl mx-auto">
+        <p className="text-lg text-justify text-gray-600 mt-4 max-w-2xl mx-auto">
           We bring you a collection of high-quality, stylish footwear that
           ensures both comfort and elegance. Our designs are inspired by modern
           trends while prioritizing durability and affordability.
@@ -119,17 +121,6 @@ const Home = () => {
 
       {/* Why Choose Us */}
       <ChooseUs />
-
-      {/* Call to Action */}
-      <div className="py-16 text-center bg-orange-500 text-white">
-        <h2 className="text-4xl font-bold">Ready to Upgrade Your Style?</h2>
-        <p className="text-lg mt-4">
-          Explore our collection and find the perfect pair for you.
-        </p>
-        <button className="mt-6 bg-white text-orange-500 py-3 px-6 rounded-full text-lg hover:bg-gray-200">
-          Shop Now
-        </button>
-      </div>
     </>
   );
 };

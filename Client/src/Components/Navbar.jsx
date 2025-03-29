@@ -7,20 +7,14 @@ const Navbar = ({ cart }) => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [accountMenu, setAccountMenu] = useState(false);
-  const [activeLink, setActiveLink] = useState(""); // Tracks active link
+  const [activeLink, setActiveLink] = useState("");
 
   const setActiveFalse = () => setActiveLink("");
-
-  const toggleAccountMenu = () => {
-    setAccountMenu((prev) => !prev);
-  };
+  const toggleAccountMenu = () => setAccountMenu((prev) => !prev);
 
   useEffect(() => {
-    const storedName = localStorage.getItem("userName");
-    const storedEmail = localStorage.getItem("userEmail");
-
-    if (storedName) setUserName(storedName);
-    if (storedEmail) setUserEmail(storedEmail);
+    setUserName(localStorage.getItem("userName") || "");
+    setUserEmail(localStorage.getItem("userEmail") || "");
   }, []);
 
   const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -29,20 +23,18 @@ const Navbar = ({ cart }) => {
     <>
       {/* Navbar */}
       <div className="sticky top-0 h-24 w-full flex items-center justify-between px-5 bg-black z-50">
-        <div className="flex items-center justify-center space-x-6">
+        <div className="flex items-center space-x-6">
           <i
             onClick={() => setMenuOpen(!menuOpen)}
-            className="fa-solid fa-bars flex text-xl text-gray-400 cursor-pointer md:hidden lg:hidden"
+            className="fa-solid fa-bars text-xl text-gray-400 cursor-pointer md:hidden"
           ></i>
           <Link to="/">
-            <div className="text-md sm:text-2xl text-gray-300 font-bold">
-              SNEEKERS
-            </div>
+            <div className="text-md sm:text-2xl text-gray-300 font-bold">SNEEKERS</div>
           </Link>
         </div>
 
-        <div className="flex items-center justify-center space-x-5">
-          <ul className="hidden md:flex lg:flex items-center justify-center space-x-5 text-md text-gray-300">
+        <div className="flex items-center space-x-5">
+          <ul className="hidden md:flex items-center space-x-5 text-md text-gray-300">
             {[
               { path: "/", label: "Home" },
               { path: "/allsneakers", label: "Shop Now" },
@@ -54,9 +46,7 @@ const Navbar = ({ cart }) => {
                 <li
                   onClick={() => setActiveLink(link.path)}
                   className={`cursor-pointer transition duration-300 ${
-                    activeLink === link.path
-                      ? "pb-2 text-orange-500 font-semibold"
-                      : "hover:pb-2 hover:text-orange-500"
+                    activeLink === link.path ? "pb-2 text-orange-500 font-semibold" : "hover:pb-2 hover:text-orange-500"
                   }`}
                 >
                   {link.label}
@@ -76,62 +66,45 @@ const Navbar = ({ cart }) => {
 
           <div className="relative">
             <i
-              onClick={() => {
-                toggleAccountMenu();
-                setActiveFalse();
-              }}
+              onClick={toggleAccountMenu}
               className="text-orange-500 text-2xl cursor-pointer fa-solid fa-circle-user"
             ></i>
 
-           <div className="relative">
-  {/* Account Menu Container */}
-  <div
-    className={`absolute top-10 right-4 w-56 flex flex-col items-center p-4 rounded-xl bg-orange-500 transition-all duration-300 shadow-lg ${
-      accountMenu
-        ? "scale-100 opacity-100"
-        : "scale-95 opacity-0 pointer-events-none"
-    }`}
-  >
-    {/* ✅ Display username correctly */}
-    <div className="mb-2 font-bold text-white truncate w-full text-center">
-      {userName ? userName : "Guest"}
-    </div>
-    <div className="text-sm text-center text-gray-200 truncate w-full">
-      {userEmail ? userEmail : "No email provided"}
-    </div>
+            {/* Account Menu */}
+            <div
+              className={`absolute top-10 right-4 w-56 flex flex-col items-center p-4 rounded-xl bg-orange-500 transition-all duration-300 shadow-lg ${
+                accountMenu ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
+              }`}
+            >
+              <div className="mb-2 font-bold text-white truncate w-full text-center">
+                {userName || "Guest"}
+              </div>
+              <div className="text-sm text-center text-gray-200 truncate w-full">
+                {userEmail || "No email provided"}
+              </div>
 
-    {/* Logout Button */}
-    <button
-      onClick={() => {
-        localStorage.removeItem("userName");
-        localStorage.removeItem("userEmail");
-        setUserName("");
-        setUserEmail("");
-      }}
-      className="mt-2 py-1 px-4 w-full text-center bg-gray-900 text-gray-300 rounded-full hover:bg-gray-800"
-    >
-      Logout
-    </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("userName");
+                  localStorage.removeItem("userEmail");
+                  setUserName("");
+                  setUserEmail("");
+                }}
+                className="mt-2 py-1 px-4 w-full text-center bg-gray-900 text-gray-300 rounded-full hover:bg-gray-800"
+              >
+                Logout
+              </button>
 
-    {/* Admin Dashboard Button */}
-    <Link to="/adminpanel" className="w-full">
-      <button className="mt-2 text-sm py-1 px-4 w-full text-center bg-gray-900 text-gray-300 rounded-full hover:bg-gray-800">
-        Dashboard
-      </button>
-    </Link>
-  </div>
-</div>
-
+              <Link to="/adminpanel" className="w-full">
+                <button className="mt-2 text-sm py-1 px-4 w-full text-center bg-gray-900 text-gray-300 rounded-full hover:bg-gray-800">
+                  Dashboard
+                </button>
+              </Link>
+            </div>
+          </div>
 
           <Link to="/login">
-            <div
-              className="flex items-center justify-center"
-              onClick={setActiveFalse}
-            >
-              <button className="py-2 px-4 rounded-full bg-orange-600 text-xs md:text-sm sm:text-sm text-gray-300">
-                LOGIN
-              </button>
-            </div>
+            <button className="py-2 px-4 rounded-full bg-orange-600 text-xs md:text-sm text-gray-300">LOGIN</button>
           </Link>
         </div>
       </div>
@@ -156,11 +129,7 @@ const Navbar = ({ cart }) => {
                   setActiveLink(link.path);
                   setMenuOpen(false);
                 }}
-                className={`cursor-pointer text-gray-300 px-6 py-4 ${
-                  activeLink === link.path
-                    ? "text-orange-500 font-semibold"
-                    : ""
-                }`}
+                className={`cursor-pointer text-gray-300 px-6 py-4 ${activeLink === link.path ? "text-orange-500 font-semibold" : ""}`}
               >
                 {link.label}
               </li>
@@ -168,8 +137,7 @@ const Navbar = ({ cart }) => {
           ))}
         </ul>
       </div>
-    </div>
-  </>
+    </>
   );
 };
 

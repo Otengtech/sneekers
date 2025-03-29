@@ -40,7 +40,7 @@ const Home = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-10">
           {[
-            "https://i.ibb.co/xtxmP1tq/img17.webp",
+            "img17.png",
             "img15.png",
             "img16.png",
             "img7.png",
@@ -52,7 +52,7 @@ const Home = () => {
               className="bg-white shadow-md rounded-xl overflow-hidden text-center p-6"
             >
               <img
-                src={`/images/${img}`}
+                src={`${import.meta.env.BASE_URL}images/${img}`}
                 alt="Product"
                 className="w-full h-72 object-cover rounded-md"
               />

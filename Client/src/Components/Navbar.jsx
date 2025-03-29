@@ -83,38 +83,45 @@ const Navbar = ({ cart }) => {
               className="text-orange-500 text-2xl cursor-pointer fa-solid fa-circle-user"
             ></i>
 
-            <div
-              className={`absolute flex flex-col items-center justify-center top-10 p-4 rounded-xl bg-orange-500 transition-transform duration-300 ${
-                accountMenu
-                  ? "translate-x-0 opacity-100"
-                  : "translate-x-3 opacity-0 pointer-events-none"
-              }`}
-            >
-              {/* ✅ Display username correctly */}
-              <div className="mb-2 font-bold text-white">
-                {userName ? userName : "Guest"}
-              </div>
-              <div className="text-sm text-center text-gray-200">
-                {userEmail ? userEmail : "No email provided"}
-              </div>
-              <button
-                onClick={() => {
-                  localStorage.removeItem("userName");
-                  localStorage.removeItem("userEmail");
-                  setUserName("");
-                  setUserEmail("");
-                }}
-                className="mt-2 py-1 px-4 bg-gray-900 text-gray-300 rounded-full"
-              >
-                Logout
-              </button>
-              <Link to='/adminpanel'>
-                <button className="mt-2 text-sm py-1 px-4 bg-gray-900 text-gray-300 rounded-full">
-                  Dashboard
-                </button>
-              </Link>
-            </div>
-          </div>
+           <div className="relative">
+  {/* Account Menu Container */}
+  <div
+    className={`absolute top-10 right-4 w-56 flex flex-col items-center p-4 rounded-xl bg-orange-500 transition-all duration-300 shadow-lg ${
+      accountMenu
+        ? "scale-100 opacity-100"
+        : "scale-95 opacity-0 pointer-events-none"
+    }`}
+  >
+    {/* ✅ Display username correctly */}
+    <div className="mb-2 font-bold text-white truncate w-full text-center">
+      {userName ? userName : "Guest"}
+    </div>
+    <div className="text-sm text-center text-gray-200 truncate w-full">
+      {userEmail ? userEmail : "No email provided"}
+    </div>
+
+    {/* Logout Button */}
+    <button
+      onClick={() => {
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userEmail");
+        setUserName("");
+        setUserEmail("");
+      }}
+      className="mt-2 py-1 px-4 w-full text-center bg-gray-900 text-gray-300 rounded-full hover:bg-gray-800"
+    >
+      Logout
+    </button>
+
+    {/* Admin Dashboard Button */}
+    <Link to="/adminpanel" className="w-full">
+      <button className="mt-2 text-sm py-1 px-4 w-full text-center bg-gray-900 text-gray-300 rounded-full hover:bg-gray-800">
+        Dashboard
+      </button>
+    </Link>
+  </div>
+</div>
+
 
           <Link to="/login">
             <div

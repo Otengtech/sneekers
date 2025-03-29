@@ -169,6 +169,7 @@ const Navbar = ({ cart }) => {
         </ul>
       </div>
     </div>
+  </>
   );
 };
 

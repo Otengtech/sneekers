@@ -18,7 +18,7 @@ const AdminPanel = ({ items, setItems }) => {
   const [image, setImage] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [pin, setPin] = useState("");
-  const adminPin = "111"; // Ensure it's a string if input is string
+  const adminPin = "1957"; // Ensure it's a string if input is string
   //   const navigate = useNavigate();
 
   useEffect(() => {
@@ -125,27 +125,39 @@ const AdminPanel = ({ items, setItems }) => {
   return (
     <div className="p-7 relative my-10 p-5 w-full mx-auto text-white rounded-xl shadow-lg">
       <div
-        style={{ display: state }}
-        className="fixed top-0 left-0 bg-black w-full h-screen flex flex-col space-y-5 items-center justify-center"
-      >
-        <div className="text-orange-500 text-4xl">
-          WELCOME TO THE ADMIN PAGE
-        </div>
-        <div>Please input the admin pin to access the page</div>
-        <input
-          onChange={handlePin}
-          value={pin}
-          type="password"
-          className="py-2 text-gray-700 placeholder:text-gray-500 px-6 rounded-full"
-          placeholder="Admin pin"
-        />
-        <button
-          onClick={verifyPin}
-          className="py-2 px-6 bg-orange-500 cursor-pointer rounded-full"
-        >
-          Verify
-        </button>
-      </div>
+  style={{ display: state }}
+  className="fixed inset-0 h-screen bg-black bg-opacity-90 flex items-center justify-center"
+>
+  <div className="bg-gray-900 text-white w-96 max-w-full p-6 rounded-xl shadow-lg flex flex-col items-center space-y-5">
+    {/* Title */}
+    <h2 className="text-orange-500 text-3xl font-bold text-center">
+      WELCOME TO THE ADMIN PAGE
+    </h2>
+    
+    {/* Instruction */}
+    <p className="text-gray-300 text-center">
+      Please input the admin pin to access the page
+    </p>
+
+    {/* Input Field */}
+    <input
+      onChange={handlePin}
+      value={pin}
+      type="password"
+      className="w-full py-2 px-6 rounded-full bg-gray-800 text-gray-200 placeholder-gray-500 focus:outline-none text-center"
+      placeholder="Enter Admin Pin"
+    />
+
+    {/* Verify Button */}
+    <button
+      onClick={verifyPin}
+      className="w-full py-2 px-6 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition duration-300"
+    >
+      Verify
+    </button>
+  </div>
+</div>
+
       <div className="">
         <div className="w-full px-5 sm:w-1/2 md:w-1/2 mx-auto mb-10">
           <h1 className="text-3xl text-center font-bold mb-4 text-orange-500">

@@ -10,15 +10,15 @@ const Home = () => {
     backgroundImage: `url('${import.meta.env.BASE_URL}/images/airmax.jpg')`,
   }} className="relative bg-cover bg-center h-96 m-6 flex items-center justify-center text-center px-6">
         <div className="">
-          <h1 className="text-4xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold text-orange-500">
             Welcome to Our Exclusive Collection
           </h1>
-          <p className="text-2xl text-gray-600 mt-4">
+          <p className="text-2xl text-gray-200 mt-4">
             Discover premium quality footwear designed for style and comfort.
           </p>
-          <button className="mt-6 bg-orange-500 text-white py-3 px-6 rounded-full text-lg hover:bg-orange-600">
+          <Link to="/allsneakers"><button className="mt-6 bg-orange-500 text-white py-3 px-6 rounded-full text-lg hover:bg-orange-600">
             Shop Now
-          </button>
+          </button></Link>
         </div>
       </div>
 

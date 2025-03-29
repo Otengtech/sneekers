@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 const Hero = () => {
   return (
     <>
-      <div className="relative top-0 bg-[url('/images/hero-wall.jpg')] bg-cover bg-center bg-no-repeat h-myScreen sm:h-screen lg:h-[calc(100vh-80px)] md:h-[calc(100vh-80px)] py-24 px-6 sm:px-10 md:px-10 flex flex-col items-center justify-center space-y-10">
+      <div style={{
+    backgroundImage: `url('${import.meta.env.BASE_URL}/images/hero-wall.jpg')`,
+  }} className="relative top-0 bg-cover bg-center bg-no-repeat h-myScreen sm:h-screen lg:h-[calc(100vh-80px)] md:h-[calc(100vh-80px)] py-24 px-6 sm:px-10 md:px-10 flex flex-col items-center justify-center space-y-10">
 
         <div className="absolute inset-0 bg-black/40 z-0"></div>
 
@@ -25,11 +27,6 @@ const Hero = () => {
             <Link to="/allsneakers">
               <button className="bg-orange-600 text-gray-300 text-sm px-6 sm:px-10 py-4 rounded-full">
                 SHOP NOW
-              </button>
-            </Link>
-            <Link to="/allsneakers">
-              <button className="bg-black text-gray-300 px-6 text-sm sm:px-10 py-4 rounded-full">
-                VIEW SNEAKERS
               </button>
             </Link>
           </div>

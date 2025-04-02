@@ -6,9 +6,7 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <div style={{
-    backgroundImage: `url('${import.meta.env.BASE_URL}/images/airmax.jpg')`,
-  }} className="relative bg-cover bg-center h-96 m-6 flex items-center justify-center text-center px-6">
+      <div className="rounded-2xl bg-black h-96 m-6 flex items-center justify-center text-center px-6">
         <div className="">
           <h1 className="text-4xl font-bold text-orange-500">
             Welcome to Our Exclusive Collection

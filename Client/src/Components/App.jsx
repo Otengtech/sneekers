@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Loader from "./Loader.jsx";
 import Navbar from "./Navbar.jsx";
 import Hero from "./Hero.jsx";
@@ -20,9 +20,9 @@ const App = () => {
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
   const [cart, setCart] = useState([]);
-  const [userName, setUserName] = useState('')
-  const [userEmail, setUserEmail] = useState('')
-  const [loader, setLoader] = useState(true);  // Loader starts as true
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -56,7 +56,7 @@ const App = () => {
   }, []);
 
   return (
-    <Router basename="/sneekers">
+    <Router>
       {loader ? <Loader /> : (
         <div>
           <Navbar cart={cart} setCart={setCart} userEmail={userEmail} userName={userName}/>

@@ -58,6 +58,31 @@ const About = () => {
       )}
   
       <ChooseUs />
+      <div className="max-w-2xl mx-auto mt-16 px-6">
+            <form className="bg-gray-800 p-8 rounded-xl shadow-lg space-y-6 backdrop-blur-lg bg-opacity-80">
+              <h2 className="text-center text-2xl sm:text-3xl font-bold text-orange-500 mb-6">
+                Send a Review
+              </h2>
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="w-full px-6 py-3 border border-gray-700 rounded-full bg-gray-300 text-black placeholder:text-md placeholder-gray-500"
+              />
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="w-full px-6 py-3 border border-gray-700 rounded-full bg-gray-300 text-black placeholder:text-md placeholder-gray-500"
+              />
+              <textarea
+                rows="4"
+                placeholder="Your Review"
+                className="w-full p-4 border border-gray-700 rounded-lg bg-gray-300 text-black placeholder-gray-500"
+              ></textarea>
+              <button className="w-full bg-orange-500 text-gray-900 p-4 rounded-full text-md transition hover:bg-orange-600">
+                Send Review
+              </button>
+            </form>
+          </div>
       <Footer />
     </>
   )

@@ -100,7 +100,7 @@ const Login = ({ setUserName, setUserEmail }) => {
   return (
     <>
       <ToastContainer />
-      <div className="p-4 relative bg-[url('/images/wall1.webp')] bg-cover bg-center w-full h-[85vh] flex items-center justify-center">
+      <div className="p-4 relative bg-[url('${import.meta.env.BASE_URL}/images/wall1.webp')] bg-cover bg-center w-full h-[85vh] flex items-center justify-center">
         <div className="bg-black bg-opacity-70 p-8 md:p-12 rounded-xl shadow-lg w-full max-w-xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-orange-500">

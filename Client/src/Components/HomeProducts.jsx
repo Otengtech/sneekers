@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
-const Home = forwardRef((ref) => {
+const Home = forwardRef((props, ref) => {
   const [reviews, setReview] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -89,7 +89,7 @@ const Home = forwardRef((ref) => {
       </div>
 
       {/* Featured Products */}
-      <div className="py-10 bg-gray-100">
+      <div ref={ref} className="py-10 bg-gray-100">
         <div className="py-14 bg-gray-100">
           <h2 className="text-4xl sm:text-5xl font-bold text-center text-gray-800">
             Featured Collections
@@ -98,7 +98,7 @@ const Home = forwardRef((ref) => {
             Check out our top picks for this season.
           </p>
 
-          <div ref={ref} className="mt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 px-6 sm:px-10">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 px-6 sm:px-10">
             {[
               {
                 id: 1,

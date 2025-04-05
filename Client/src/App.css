@@ -16,3 +16,6 @@ span {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+.r::-webkit-scrollbar {
+  display: none;
+}

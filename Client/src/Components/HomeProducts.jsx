@@ -148,7 +148,7 @@ const Home = () => {
           What Our Customers Say
         </div>
         <div
-          className="r flex overflow-x-auto mt-6 space-x-4 px-4 no-scrollbar cursor-grab active:cursor-grabbing"
+          className="r flex overflow-x-auto mt-6 space-x-4 no-scrollbar cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => {
             const container = e.currentTarget;
             let isDown = true;

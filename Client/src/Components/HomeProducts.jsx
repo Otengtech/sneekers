@@ -143,7 +143,7 @@ const Home = () => {
       </div>
 
       {/* Customer Testimonials */}
-      <div className="py-16 px-10 bg-white text-center">
+      <div className="py-16 px-3 md:px-10 bg-white text-center">
         <div className="text-4xl md:text-6xl font-bold mb-8 text-gray-800">
           What Our Customers Say
         </div>

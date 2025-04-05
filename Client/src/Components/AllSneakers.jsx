@@ -18,6 +18,7 @@ const AllSneakers = ({
   const handleInput = (event) => {
     setInput(event.target.value);
   };
+  
 
   const addToCart = (id) => {
     const itemAdded = originalProducts.find((item) => item.id === id);
@@ -147,14 +148,14 @@ const AllSneakers = ({
             </p>
 
             {/* Sneakers Grid */}
-            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-14">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
               {products.map((item) => (
                 <div
-                  className="shadow-lg rounded-lg overflow-hidden bg-gray-900 text-gray-200"
                   key={item.id}
+                  className="flex flex-row md:flex-row bg-white shadow-xl shadow-gray-300 rounded-2xl overflow-hidden transition hover:scale-[1.02] duration-300"
                 >
                   {/* Product Image */}
-                  <div className="w-full bg-gray-600">
+                  <div className="w-full md:w-1/2 h-64 md:h-auto bg-gray-100 flex items-center justify-center">
                     <img
                       src={
                         item.img?.startsWith("http")
@@ -162,34 +163,49 @@ const AllSneakers = ({
                           : `images/${item.img || "default.jpg"}`
                       }
                       alt={item.name || "Product Image"}
-                      className="w-full h-full object-cover border border-gray-200"
+                      className="w-full h-full"
                     />
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-6 text-center space-y-4">
-                    <h3 className="text-lg font-semibold">{item.name}</h3>
-                    <p className="text-orange-400 text-xl font-bold">
-                      ${item.prize}
-                    </p>
+                  <div className="w-full md:w-1/2 py-10 px-4 flex flex-col items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-semibold text-gray-800">
+                        {item.name}
+                      </h2>
+                      <p className="text-sm text-gray-500 mt-1 capitalize">
+                        {item.type} • {item.gender}
+                      </p>
+                    </div>
+                    <div>
+                      {/* Rating */}
+                      <div className="flex items-center justify-center text-orange-400 mt-2 space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <i key={i} className="text-orange-500 fa-solid fa-star" />
+                        ))}
+                      </div>
 
-                    {/* Star Rating */}
-                    <div className="flex justify-center text-orange-500 space-x-1 text-xl">
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
+                      {/* Size and Price */}
+                      <div className="flex flex-wrap justify-center items-center gap-3 mt-3">
+                        <span className="bg-gray-200 text-xs text-gray-700 px-2 py-1 rounded-full">
+                          Size: {item.size}
+                        </span>
+                        <span className="text-lg font-bold text-gray-800">
+                          ${item.prize}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Add to Cart Button */}
-                    <button
-                      onClick={() => addToCart(item.id)}
-                      className="w-full bg-orange-600 text-white py-3 rounded-full flex items-center justify-center gap-2 transition hover:bg-orange-500 active:bg-orange-400"
-                    >
-                      <i className="fa-solid fa-bag-shopping text-xl"></i>
-                      Add to Cart
-                    </button>
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={() => addToCart(item.id)}
+                        className="flex items-center gap-2 px-5 py-2 bg-orange-500 text-black text-sm mt-2 md:text-md rounded-full hover:bg-orange-400 transition"
+                      >
+                        <i className="fa-solid fa-bag-shopping"></i>
+                        Add to Cart
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

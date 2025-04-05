@@ -5,6 +5,7 @@ import { db } from "../Auth/FirebaseAuth";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../App.css"
 
 const Home = () => {
   const [reviews, setReview] = useState([]);
@@ -147,7 +148,7 @@ const Home = () => {
           What Our Customers Say
         </div>
         <div
-          className="flex overflow-x-auto mt-6 space-x-4 overflow-x-hidden px-4 no-scrollbar cursor-grab active:cursor-grabbing"
+          className="r flex overflow-x-auto mt-6 space-x-4 px-4 no-scrollbar cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => {
             const container = e.currentTarget;
             let isDown = true;
@@ -180,7 +181,7 @@ const Home = () => {
                 <div className="p-5 w-96 text-start rounded-lg bg-black my-3">
                   <div className="text-white text-xl">{item.name}</div>
                   <div className="text-orange-600 text-md">{item.email}</div>
-                  <p className="my-4 text-white">{item.message}</p>
+                  <p className="my-4 text-white w-full">{item.message}</p>
                   <div className="flex items-center justify-start space-x-2 my-3 text-xl text-orange-600">
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>

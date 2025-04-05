@@ -9,7 +9,7 @@ import Contact from "./Contact.jsx";
 import HomeProducts from "./HomeProducts.jsx";
 import Login from "./Login.jsx";
 import About from "./About.jsx";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { db } from "../Auth/FirebaseAuth";
 import { collection, getDocs } from "firebase/firestore";
 import Policy from "./Policy.jsx";
@@ -23,12 +23,19 @@ const App = () => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [loader, setLoader] = useState(true);
+  const [review, setReview] = useState([]);
 
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
     }, 1000);
   }, []);
+
+  const sneakersSectionRef = useRef(null);
+
+  const handleScrollToSneakers = () => {
+    sneakersSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
@@ -58,13 +65,14 @@ const App = () => {
   return (
     <Router>
       {loader ? <Loader /> : (
-        <div>
+        <div className="scroll-smooth">
           <Navbar cart={cart} setCart={setCart} userEmail={userEmail} userName={userName}/>
           <Routes>
             <Route path="/" element={
               <>
-                <Hero />
-                <HomeProducts />
+                <Hero handleScrollToSneakers={handleScrollToSneakers} />
+                {/* <div className="h-[500px]" /> */}
+                <HomeProducts ref={sneakersSectionRef}/>
                 <Footer />
               </>
             } />
@@ -82,7 +90,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/adminpanel" element={<AdminPanel items={products} setItems={setProducts} />} />
             <Route path="/checkout" element={<CheckOut />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/about" element={<About review={review} setReviews={setReview} />} />
             <Route path="/policy" element={<Policy />} />
             <Route path="/login" element={<Login setUserName={setUserName} setUserEmail={setUserEmail} />} />
             <Route path="/cart" element={

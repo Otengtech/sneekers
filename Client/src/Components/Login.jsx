@@ -74,33 +74,33 @@ const Login = ({ setUserName, setUserEmail }) => {
   return (
     <>
       <ToastContainer />
-      <div className="p-4 relative bg-[url('images/wall1.webp')] bg-cover bg-center w-full h-[85vh] flex items-center justify-center">
-        <div className="bg-black bg-opacity-70 p-8 md:p-12 rounded-xl shadow-lg w-full max-w-xl">
+      <div className="p-4 bg-white w-full h-[85vh] flex items-center justify-center">
+        <div className="p-8 md:p-12 rounded-xl shadow-lg w-full max-w-xl">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-orange-500">{isLogin ? "LOG INTO YOUR ACCOUNT" : "CREATE A NEW ACCOUNT"}</h2>
-            <p className="text-gray-300 mt-2">{isLogin ? "Login to access your account." : "Sign up to access our services."}</p>
+            <div className="text-4xl font-bold text-gray-600">{isLogin ? "LOG INTO YOUR ACCOUNT" : "CREATE A NEW ACCOUNT"}</div>
+            <p className="text-gray-500 mt-2">{isLogin ? "Login to access your account." : "Sign up to access our services."}</p>
           </div>
           <form onSubmit={handleAuth} className="space-y-4 mt-4">
             {!isLogin && (
-              <div className="flex bg-white items-center py-2 px-4 rounded-full">
-                <i className="fa-solid fa-user text-lg mr-3 text-gray-600"></i>
+              <div className="flex bg-white border border-gray-400 items-center py-2 px-4 rounded-full">
+                <i className="fa-solid fa-user text-lg mr-3 text-gray-500"></i>
                 <input required value={signupName} onChange={(e) => setSignupName(e.target.value)} className="w-full bg-transparent focus:outline-none placeholder:text-gray-600" type="text" placeholder="Enter name" />
               </div>
             )}
-            <div className="flex bg-white items-center py-2 px-4 rounded-full">
-              <i className="fa-solid fa-envelope text-lg mr-3 text-gray-600"></i>
+            <div className="flex bg-white border border-gray-400 items-center py-2 px-4 rounded-full">
+              <i className="fa-solid fa-envelope text-lg mr-3 text-gray-500"></i>
               <input required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-transparent focus:outline-none placeholder:text-gray-600" type="email" placeholder="Enter email" />
             </div>
-            <div className="flex bg-white items-center py-2 px-4 rounded-full relative">
-              <i className="fa-solid fa-lock text-lg mr-3 text-gray-600"></i>
+            <div className="flex bg-white border border-gray-400 items-center py-2 px-4 rounded-full relative">
+              <i className="fa-solid fa-lock text-lg mr-3 text-gray-500"></i>
               <input required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-transparent focus:outline-none placeholder:text-gray-600" type={showPassword ? "text" : "password"} placeholder="Enter password" />
-              <i onClick={() => setShowPassword(!showPassword)} className={`text-gray-700 cursor-pointer fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+              <i onClick={() => setShowPassword(!showPassword)} className={`text-gray-500 cursor-pointer fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
             </div>
             {!isLogin && (
-              <div className="flex bg-white items-center py-2 px-4 rounded-full relative">
-                <i className="fa-solid fa-lock text-lg mr-3 text-gray-600"></i>
+              <div className="flex bg-white border border-gray-400 items-center py-2 px-4 rounded-full relative">
+                <i className="fa-solid fa-lock text-lg mr-3 text-gray-500"></i>
                 <input required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full bg-transparent focus:outline-none placeholder:text-gray-600" type={showConfirmPassword ? "text" : "password"} placeholder="Confirm password" />
-                <i onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={`text-gray-700 cursor-pointer fa-solid ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+                <i onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={`text-gray-500 cursor-pointer fa-solid ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
               </div>
             )}
             <div className="text-center">
@@ -108,7 +108,7 @@ const Login = ({ setUserName, setUserEmail }) => {
                 {isLogin ? "LOGIN" : "CREATE ACCOUNT"}
               </button>
             </div>
-            <p className="text-center text-white mt-4">
+            <p className="text-center text-gray-500 mt-4">
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
               <span onClick={() => setIsLogin(!isLogin)} className="underline text-blue-500 cursor-pointer hover:text-blue-400">
                 {isLogin ? "Create account" : "Login"}

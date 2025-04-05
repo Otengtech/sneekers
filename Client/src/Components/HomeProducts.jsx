@@ -178,7 +178,7 @@ const Home = () => {
           ) : (
             reviews.map((item) => (
               <div key={item.id} className="shrink-0">
-                <div className="p-5 w-96 text-start rounded-lg bg-black my-3">
+                <div className="p-3 w-96 text-start rounded-lg bg-black my-3">
                   <div className="text-white text-xl">{item.name}</div>
                   <div className="text-orange-600 text-md">{item.email}</div>
                   <p className="my-4 text-white w-full">{item.message}</p>

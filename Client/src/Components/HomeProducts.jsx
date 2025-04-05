@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import ChooseUs from "./ChooseUs";
 import { Link } from "react-router-dom";
 import { db } from "../Auth/FirebaseAuth";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../App.css"
+import "../App.css";
 
-const Home = () => {
+const Home = forwardRef((ref) => {
   const [reviews, setReview] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -77,25 +77,11 @@ const Home = () => {
   return (
     <>
       <ToastContainer />
-      {/* Hero Section */}
-      <div className="bg-gray-800 rounded-xl md: h-96 m-6 flex items-center justify-center text-center">
-        <div className="p-8">
-          <h1 className="text-5xl font-bold text-orange-500">
-            Welcome to Our Exclusive Collection
-          </h1>
-          <p className="text-2xl text-gray-200 mt-4">
-            Discover premium quality footwear designed for style and comfort.
-          </p>
-          <button className="mt-6 bg-orange-500 text-white py-3 px-6 rounded-full text-lg hover:bg-orange-600">
-            Shop Now
-          </button>
-        </div>
-      </div>
 
       {/* About Us Section */}
       <div className="py-16 px-10 text-center">
         <h2 className="text-5xl font-bold text-gray-800">Who We Are</h2>
-        <p className="text-2xl text-justify text-gray-600 mt-4 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
           We bring you a collection of high-quality, stylish footwear that
           ensures both comfort and elegance. Our designs are inspired by modern
           trends while prioritizing durability and affordability.
@@ -104,51 +90,138 @@ const Home = () => {
 
       {/* Featured Products */}
       <div className="py-10 bg-gray-100">
-        <h2 className="text-5xl font-bold text-center text-gray-800">
-          Featured Collections
-        </h2>
-        <p className="text-2xl text-gray-600 text-center mt-3">
-          Check out our top picks for this season.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-10">
-          {[
-            "img17.png",
-            "img15.png",
-            "img16.png",
-            "img7.png",
-            "img4.png",
-            "img5.png",
-          ].map((img, index) => (
-            <div
-              key={index}
-              className="bg-white shadow-md rounded-xl overflow-hidden text-center p-6"
-            >
-              <img
-                src={`images/${img}`}
-                alt="Product"
-                className="w-full h-72 object-cover rounded-md"
-              />
-              <h3 className="text-2xl font-semibold mt-4">Premium Sneakers</h3>
-              <p className="text-xl text-gray-600 mt-2">
-                Experience ultimate comfort and timeless style.
-              </p>
-              <Link to="/allsneakers">
-                <button className="mt-4 bg-orange-500 text- text-white py-2 px-6 rounded-full hover:bg-orange-600">
-                  Go to shop
-                </button>
-              </Link>
-            </div>
-          ))}
+        <div className="py-14 bg-gray-100">
+          <h2 className="text-4xl sm:text-5xl font-bold text-center text-gray-800">
+            Featured Collections
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 text-center mt-3 max-w-2xl mx-auto">
+            Check out our top picks for this season.
+          </p>
+
+          <div ref={ref} className="mt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 px-6 sm:px-10">
+            {[
+              {
+                id: 1,
+                img: "img17.png",
+                name: "AirFlex Sneakers",
+                type: "Sport",
+                gender: "Unisex",
+                size: "42",
+                prize: 129,
+              },
+              {
+                id: 2,
+                img: "img15.png",
+                name: "Urban Glide",
+                type: "Street",
+                gender: "Men",
+                size: "44",
+                prize: 99,
+              },
+              {
+                id: 3,
+                img: "img16.png",
+                name: "Elegance Lowcut",
+                type: "Casual",
+                gender: "Women",
+                size: "39",
+                prize: 89,
+              },
+              {
+                id: 4,
+                img: "img7.png",
+                name: "RunnerX",
+                type: "Training",
+                gender: "Unisex",
+                size: "43",
+                prize: 110,
+              },
+              {
+                id: 5,
+                img: "img4.png",
+                name: "Vintage Lace",
+                type: "Retro",
+                gender: "Women",
+                size: "38",
+                prize: 75,
+              },
+              {
+                id: 6,
+                img: "img5.png",
+                name: "Stealth Grip",
+                type: "Athletic",
+                gender: "Men",
+                size: "45",
+                prize: 140,
+              },
+            ].map((item) => (
+              <div
+                key={item.id}
+                className="flex flex-col sm:flex-row bg-white shadow-xl shadow-gray-300 rounded-2xl overflow-hidden transition hover:scale-[1.01] duration-300"
+              >
+                {/* Product Image */}
+                <div className="w-full sm:w-1/2 h-64 sm:h-auto bg-gray-100 flex items-center justify-center">
+                  <img
+                    src={`images/${item.img}`}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Product Info */}
+                <div className="w-full sm:w-1/2 p-6 flex space-y-3 flex-col justify-center items-center text-center sm:text-left">
+                  <div className="text-center">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      {item.name}
+                    </h2>
+                    <p className="text-sm text-gray-500 mt-1 capitalize">
+                      {item.type} • {item.gender}
+                    </p>
+                  </div>
+
+                  <div className="">
+                    {/* Rating */}
+                    <div className="flex justify-center sm:justify-start text-orange-500 mb-2 space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <i key={i} className="fa-solid fa-star"></i>
+                      ))}
+                    </div>
+
+                    {/* Size and Price */}
+                    <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3">
+                      <span className="bg-gray-200 text-xs text-gray-700 px-2 py-1 rounded-full">
+                        Size: {item.size}
+                      </span>
+                      <span className="text-lg font-bold text-gray-800">
+                        ${item.prize}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="text-center">Get it in our shop</div>
+
+                  {/* CTA */}
+                  <div className="">
+                    <Link to="/allsneakers">
+                      <button className="flex items-center gap-2 px-5 py-2 bg-orange-500 text-black text-sm rounded-full hover:bg-orange-400 transition">
+                        <i className="fa-solid fa-bag-shopping"></i> Go to shop
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Customer Testimonials */}
-      <div className="py-16 px-3 md:px-10 bg-white text-center">
+      <div className="py-16 px-10 bg-white text-center">
         <div className="text-4xl md:text-6xl font-bold mb-8 text-gray-800">
           What Our Customers Say
         </div>
         <div
-          className="r flex overflow-x-auto mt-6 space-x-4 no-scrollbar cursor-grab active:cursor-grabbing"
+          className="r flex overflow-x-auto mt-6 space-x-4 px-4 no-scrollbar cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => {
             const container = e.currentTarget;
             let isDown = true;
@@ -178,7 +251,7 @@ const Home = () => {
           ) : (
             reviews.map((item) => (
               <div key={item.id} className="shrink-0">
-                <div className="p-3 w-96 text-start rounded-lg bg-black my-3">
+                <div className="p-5 w-96 text-start rounded-lg bg-black my-3">
                   <div className="text-white text-xl">{item.name}</div>
                   <div className="text-orange-600 text-md">{item.email}</div>
                   <p className="my-4 text-white w-full">{item.message}</p>
@@ -240,6 +313,6 @@ const Home = () => {
       <ChooseUs />
     </>
   );
-};
+});
 
 export default Home;

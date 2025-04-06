@@ -75,7 +75,7 @@ const Login = ({ setUserName, setUserEmail }) => {
     <>
       <ToastContainer />
       <div className="p-4 bg-white w-full h-[85vh] flex items-center justify-center">
-        <div className="p-8 md:p-12 rounded-xl shadow-lg w-full max-w-xl">
+        <div className="p-8 md:p-12 rounded-xl w-full max-w-xl">
           <div className="text-center">
             <div className="text-4xl font-bold text-gray-600">{isLogin ? "LOG INTO YOUR ACCOUNT" : "CREATE A NEW ACCOUNT"}</div>
             <p className="text-gray-500 mt-2">{isLogin ? "Login to access your account." : "Sign up to access our services."}</p>

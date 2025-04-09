@@ -15,7 +15,7 @@ const Cart = ({ cart, setCart }) => {
 
   useEffect(() => {
     const total = cart.reduce(
-      (acc, item) => acc + Number(item.prize || 0) * (item.quantity || 1),
+      (acc, item) => acc + Number(item.price || 0) * (item.quantity || 1),
       0
     );
     setTotalAmount(total); // Set the new total amount
@@ -88,16 +88,27 @@ const Cart = ({ cart, setCart }) => {
                     >
                       <div className="flex flex-col items-center">
                         <img
-                          src={item.img || "default.jpg"} // img is now a full URL from Firestore
+                          src={
+                            item.img && item.img.startsWith("http")
+                              ? item.img
+                              : item.imageUrl ||
+                                "https://via.placeholder.com/150"
+                          }
                           alt={item.name || "Product Image"}
-                          className="w-36 h-36 object-cover rounded-lg border border-gray-200"
+                          className="w-full h-full object-cover"
                         />
                       </div>
 
                       <div className="text-center text-gray-700">
                         <h2 className="text-lg font-semibold">{item.name}</h2>
                         <p className="text-orange-600 font-bold text-xl mt-2">
-                          ${Number(item.prize || 0).toFixed(2)}
+                          ${Number(item.price).toFixed(2)}
+                        </p>
+                        <span className="bg-gray-200 text-sm text-gray-700 px-2 py-1 rounded-full">
+                          Size: {item.size}
+                        </span>
+                        <p className="text-lg text-gray-500 mt-1 capitalize">
+                          {item.type} • {item.gender}
                         </p>
                       </div>
 
@@ -122,6 +133,7 @@ const Cart = ({ cart, setCart }) => {
                             +
                           </button>
                         </div>
+                        <div>$ {Number(item.price * item.quantity).toFixed(1)}</div>
                       </div>
 
                       <div className="flex flex-col items-center">

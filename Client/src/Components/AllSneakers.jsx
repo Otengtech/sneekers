@@ -18,7 +18,6 @@ const AllSneakers = ({
   const handleInput = (event) => {
     setInput(event.target.value);
   };
-  
 
   const addToCart = (id) => {
     const itemAdded = originalProducts.find((item) => item.id === id);
@@ -158,12 +157,12 @@ const AllSneakers = ({
                   <div className="w-full md:w-1/2 h-auto md:h-auto bg-gray-100 flex items-center justify-center">
                     <img
                       src={
-                        item.img?.startsWith("http")
-                          ? item.img
-                          : `images/${item.img || "default.jpg"}`
+                        item.img && item.img.startsWith("http") 
+                          ? item.img 
+                          : item.imageUrl || "https://via.placeholder.com/150" 
                       }
                       alt={item.name || "Product Image"}
-                      className="w-full h-full"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 
@@ -181,7 +180,10 @@ const AllSneakers = ({
                       {/* Rating */}
                       <div className="flex items-center justify-center text-orange-400 mt-2 space-x-1">
                         {[...Array(5)].map((_, i) => (
-                          <i key={i} className="text-orange-500 fa-solid fa-star" />
+                          <i
+                            key={i}
+                            className="text-orange-500 fa-solid fa-star"
+                          />
                         ))}
                       </div>
 
@@ -191,7 +193,7 @@ const AllSneakers = ({
                           Size: {item.size}
                         </span>
                         <span className="text-sm md:text-lg font-bold text-gray-800">
-                          ${item.prize}
+                          ${Number(item.price).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -202,7 +204,10 @@ const AllSneakers = ({
                         onClick={() => addToCart(item.id)}
                         className="flex items-center gap-2 px-5 py-2 bg-orange-500 text-black text-sm mt-2 md:text-md rounded-full hover:bg-orange-400 transition"
                       >
-                        <i onClick={() => addToCart(item.id)} className="fa-solid fa-bag-shopping"></i>
+                        <i
+                          onClick={() => addToCart(item.id)}
+                          className="fa-solid fa-bag-shopping"
+                        ></i>
                         Add to Cart
                       </button>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db, storage } from "../Auth/FirebaseAuth";
+import { db } from "../Auth/FirebaseAuth";
 import {
   collection,
   addDoc,
@@ -8,7 +8,6 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { toast } from "react-toastify";
 
 const AdminPanel = ({ items, setItems }) => {
@@ -18,20 +17,20 @@ const AdminPanel = ({ items, setItems }) => {
   const [image, setImage] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [pin, setPin] = useState("");
-  const adminPin = "1957"; // Ensure it's a string if input is string
-  //   const navigate = useNavigate();
+  const [type, setType] = useState("");
+  const [gender, setGender] = useState("");
+  const [size, setSize] = useState("");
+  const [totalAmount, setTotalAmount] = useState("");
+  const adminPin = "111";
 
   useEffect(() => {
     fetchItems();
-  });
+  }, []);
 
-  const handlePin = (e) => {
-    setPin(e.target.value);
-  };
+  const handlePin = (e) => setPin(e.target.value);
 
   const verifyPin = () => {
     if (pin !== adminPin || pin === "") {
-      alert("Incorrect Admin Pin");
       toast.warn("Incorrect Admin Pin", {
         position: "top-right",
         autoClose: 1000,
@@ -41,185 +40,272 @@ const AdminPanel = ({ items, setItems }) => {
         position: "top-right",
         autoClose: 1000,
       });
-      setTimeout(() => {
-        setState("none");
-      }, 1000);
+      setTimeout(() => setState("none"), 1000);
     }
   };
 
-  const fetchImageUrl = async (imageName) => {
-    if (!imageName) return "default.jpg"; // Fallback image if no name is provided
+  const uploadImageToImgBB = async (imageFile) => {
+    const formData = new FormData();
+    formData.append("image", imageFile);
 
-    try {
-      // Reference to Firebase Storage with the correct folder
-      const storageRef = ref(storage, `products/${imageName}`);
-      return await getDownloadURL(storageRef);
-    } catch (error) {
-      console.error("Error fetching image:", error);
-      return "default.jpg"; // Fallback if the image is missing
+    const res = await fetch(
+      `https://api.imgbb.com/1/upload?key=69f4521c64f28a3fcff440ca4af10f8e`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    if (data.success) {
+      return data.data.url;
+    } else {
+      throw new Error("Image upload failed");
     }
   };
 
   const fetchItems = async () => {
     const querySnapshot = await getDocs(collection(db, "products"));
-
-    const itemList = await Promise.all(
-      querySnapshot.docs.map(async (doc) => {
-        const data = doc.data();
-        const imageUrl = await fetchImageUrl(data.imageUrl); // Convert filename to full URL
-
-        return { id: doc.id, ...data, imageUrl };
-      })
-    );
-
+    const itemList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     setItems(itemList);
   };
 
   const handleAddOrUpdateItem = async (e) => {
     e.preventDefault();
-    if (!name || !price) {
-      alert("All fields are required!");
+
+    if (!name || !price || !gender || !size || !type) {
+      toast.warn("All fields are required!", {
+        position: "top-right",
+        autoClose: 1000,
+      });
       return;
     }
 
     let imageUrl = editingId
-      ? items.find((item) => item.id === editingId)?.imageUrl || "" // Keep old image if not changed
+      ? items.find((item) => item.id === editingId)?.imageUrl || ""
       : "";
 
-    if (image) {
-      const imageRef = ref(storage, `products/${image.name}`);
-      await uploadBytes(imageRef, image);
-      imageUrl = await getDownloadURL(imageRef);
+    try {
+      if (image) {
+        imageUrl = await uploadImageToImgBB(image);
+      }
+
+      const productData = {
+        name,
+        price: Number(price),
+        imageUrl,
+        gender,
+        size,
+        type,
+      };
+
+      if (editingId) {
+        await updateDoc(doc(db, "products", editingId), productData);
+        toast.success("Item updated successfully!", {
+          position: "top-right",
+          autoClose: 1000,
+        });
+      } else {
+        await addDoc(collection(db, "products"), productData);
+        toast.success("Item added successfully!", {
+          position: "top-right",
+          autoClose: 1000,
+        });
+      }
+
+      fetchItems();
+      setName("");
+      setPrice("");
+      setType("");
+      setSize("");
+      setGender("");
+      setImage(null);
+      setEditingId(null);
+    } catch (error) {
+      console.error("Error adding/updating item:", error);
+      toast.error("An error occurred. Try again!", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
-
-    const productData = {
-      name,
-      price: Number(price),
-      imageUrl, // Ensure it saves correctly
-    };
-
-    if (editingId) {
-      await updateDoc(doc(db, "products", editingId), productData);
-    } else {
-      await addDoc(collection(db, "products"), productData);
-    }
-
-    fetchItems();
-    setName("");
-    setPrice("");
-    setImage(null);
-    setEditingId(null);
   };
 
   const handleEditItem = (item) => {
     setName(item.name);
     setPrice(item.price);
     setEditingId(item.id);
+    setGender(item.gender);
+    setSize(item.size);
+    setType(item.type);
   };
 
+  useEffect(() => {
+    if (items && items.length > 0) {
+      setTotalAmount(
+        items.reduce((acc, i) => acc + Number(i.price || 0), 0).toFixed(2)
+      );
+    } else {
+      setTotalAmount("0.00");
+    }
+  }, [items]);
+
   const handleDeleteItem = async (id) => {
-    await deleteDoc(doc(db, "products", id));
-    fetchItems();
+    try {
+      await deleteDoc(doc(db, "products", id));
+      toast.success("Item deleted successfully!", {
+        position: "top-right",
+        autoClose: 1000,
+      });
+      fetchItems();
+    } catch (error) {
+      toast.error("Error deleting item. Try again!", {
+        position: "top-right",
+        autoClose: 1000,
+      }),
+        error;
+    }
   };
 
   return (
-    <div className="p-7 relative my-10 p-5 w-full mx-auto text-white rounded-xl shadow-lg">
+    <div className="min-h-screen bg-gray-100 p-3">
+      {/* Admin PIN overlay */}
       <div
-  style={{ display: state }}
-  className="fixed inset-0 h-screen bg-black bg-opacity-90 flex items-center justify-center"
->
-  <div className="bg-gray-900 text-white w-96 max-w-full p-6 rounded-xl shadow-lg flex flex-col items-center space-y-5">
-    {/* Title */}
-    <h2 className="text-orange-500 text-3xl font-bold text-center">
-      WELCOME TO THE ADMIN PAGE
-    </h2>
-    
-    {/* Instruction */}
-    <p className="text-gray-300 text-center">
-      Please input the admin pin to access the page
-    </p>
+        style={{ display: state }}
+        className="fixed top-0 left-0 z-50 bg-black/90 w-full h-screen flex flex-col space-y-5 items-center justify-center text-white"
+      >
+        <h1 className="text-4xl font-bold text-orange-500">
+          WELCOME TO ADMIN PANEL
+        </h1>
+        <p className="text-lg">Enter Admin PIN to proceed</p>
+        <input
+          type="password"
+          value={pin}
+          onChange={handlePin}
+          className="px-6 py-2 rounded-full text-gray-800 placeholder:text-gray-600"
+          placeholder="Admin PIN"
+        />
+        <button
+          onClick={verifyPin}
+          className="px-6 py-2 bg-orange-500 rounded-full hover:bg-orange-600 transition"
+        >
+          Verify
+        </button>
+      </div>
 
-    {/* Input Field */}
-    <input
-      onChange={handlePin}
-      value={pin}
-      type="password"
-      className="w-full py-2 px-6 rounded-full bg-gray-800 text-gray-200 placeholder-gray-500 focus:outline-none text-center"
-      placeholder="Enter Admin Pin"
-    />
-
-    {/* Verify Button */}
-    <button
-      onClick={verifyPin}
-      className="w-full py-2 px-6 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition duration-300"
-    >
-      Verify
-    </button>
-  </div>
-</div>
-
-      <div className="">
-        <div className="w-full px-5 sm:w-1/2 md:w-1/2 mx-auto mb-10">
-          <h1 className="text-3xl text-center font-bold mb-4 text-orange-500">
-            Admin Panel
-          </h1>
-          <form onSubmit={handleAddOrUpdateItem} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Item Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border py-2 px-6 w-full rounded-full bg-gray-400 text-black placeholder-gray-900"
-            />
-            <input
-              type="number"
-              placeholder="Price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="border py-2 px-6 w-full rounded-full bg-gray-400 text-black placeholder-gray-900"
-            />
-            <input
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-              className="border py-2 px-6 w-full rounded-full bg-gray-400 text-black placeholder-gray-900"
-            />
-            <button className="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition">
-              {editingId ? "Update Item" : "Add Item"}
-            </button>
-          </form>
+      {/* Dashboard Summary */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-green-500 text-white p-6 rounded-xl shadow">
+          <p className="text-xl font-semibold">{items.length}</p>
+          <p>Products Available</p>
+        </div>
+        <div className="bg-orange-400 text-white p-6 rounded-xl shadow">
+          <p className="text-xl font-semibold">$ {totalAmount}</p>
+          <p>Total Items Value</p>
         </div>
       </div>
-      <div>
-        <h2 className="text-3xl font-bold mt-5 text-orange-500 text-center">
-          All Items
+
+      {/* Add/Edit Form */}
+      <div className="bg-white p-6 rounded-xl shadow mb-8">
+        <h2 className="text-3xl font-bold text-center mb-4 text-orange-500">
+          {editingId ? "Edit Product" : "Add Product"}
         </h2>
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <form
+          onSubmit={handleAddOrUpdateItem}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          <input
+            type="text"
+            placeholder="Item Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+          />
+          <input
+            type="text"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+          />
+          <input
+            type="text"
+            placeholder="Type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+          />
+          <input
+            type="text"
+            placeholder="Size"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+          />
+          <input
+            type="text"
+            placeholder="Gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+          />
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+          />
+          <button
+            type="submit"
+            className="col-span-1 md:col-span-3 bg-orange-500 text-white py-3 rounded-full hover:bg-orange-600"
+          >
+            {editingId ? "Update Item" : "Add Item"}
+          </button>
+        </form>
+      </div>
+
+      {/* Products List */}
+      <div>
+        <h2 className="text-3xl text-center font-bold text-orange-500 mb-4">
+          Product List
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
             <div
               key={item.id}
-              className="border py-10 flex flex-col items-center rounded-lg bg-gray-700"
+              className="bg-white rounded-xl shadow flex space-y-3 items-center"
             >
               <img
-                src={item.img || "default.jpg"} // img is now a full URL from Firestore
+                src={item.imageUrl || "https://via.placeholder.com/150"} // Fetch from ImgBB or use placeholder
                 alt={item.name || "Product Image"}
-                className="w-36 h-36 object-cover rounded-lg border border-gray-200"
+                className="w-48 h-48 md:w-56 md:h-56 lg:w-56 lg:h-56 rounded-l-xl"
               />
-              <p className="text-lg font-semibold mt-2">
-                {item.name} - ${item.price}
-              </p>
-              <div className="mt-2 flex space-x-3">
-                <button
-                  onClick={() => handleEditItem(item)}
-                  className="bg-blue-500 text-white px-4 py-1 rounded-full"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteItem(item.id)}
-                  className="bg-orange-500 text-white px-4 py-1 rounded-full"
-                >
-                  Delete
-                </button>
+              <div className="w-full flex flex-col items-center justify-center space-y-1">
+                <h3 className="text-lg font-semibold">{item.name}</h3>
+                <p className="text-sm text-gray-500 mt-1 capitalize">
+                  {item.type} • {item.gender}
+                </p>
+                <span className="bg-gray-200 text-xs text-gray-700 px-2 py-1 rounded-full">
+                  Size: {item.size}
+                </span>
+                <p className="text-gray-700">
+                  ${Number(item.price).toFixed(2)}
+                </p>
+                <div className="flex space-x-4 mt-3">
+                  <button
+                    onClick={() => handleEditItem(item)}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    <i className="text-2xl fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteItem(item.id)}
+                    className="text-orange-500 hover:text-red-700"
+                  >
+                    <i className="text-2xl fa-solid fa-trash"></i>
+                  </button>
+                </div>
               </div>
             </div>
           ))}

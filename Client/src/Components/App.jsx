@@ -19,7 +19,6 @@ import AdminPanel from "./AdminPanel.jsx";
 const App = () => {
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
-  const [cart, setCart] = useState([]);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [loader, setLoader] = useState(true);
@@ -31,6 +30,10 @@ const App = () => {
     }, 1000);
   }, []);
 
+  const [cart, setCart] = useState(() => {
+    const storedCart = localStorage.getItem("cartItems");
+    return storedCart ? JSON.parse(storedCart) : [];
+  });
   const sneakersSectionRef = useRef(null);
 
   const handleScrollToSneakers = () => {
@@ -66,7 +69,8 @@ const App = () => {
     <Router>
       {loader ? <Loader /> : (
         <div className="scroll-smooth">
-          <Navbar cart={cart} setCart={setCart} userEmail={userEmail} userName={userName}/>
+          <Navbar cart={cart} setCart={setCart} userEmail={userEmail} setUserEmail={setUserEmail} setUserName={setUserName}
+           userName={userName}/>
           <Routes>
             <Route path="/" element={
               <>

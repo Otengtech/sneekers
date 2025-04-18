@@ -203,7 +203,7 @@ const AllSneakers = ({
                         </span>
                         <span className="text-sm md:text-lg font-bold text-gray-800">
                           GH<i className="fa-solid fa-cedi-sign"></i>{" "}
-                          {Number(item?.price ?? 0)}
+                          {Number(item?.price ?? 0).toFixed(2)}
                         </span>
                       </div>
                     </div>

@@ -177,7 +177,7 @@ const AllSneakers = ({
                           : item.imageUrl || "https://via.placeholder.com/150"
                       }
                       alt={item.name}
-                      className="w-full h-full object-cover cursor-pointer"
+                      className="w-40 h-40 md:w-full md:h-full lg:w-full lg:h-full object-cover cursor-pointer"
                     />
                   </div>
 

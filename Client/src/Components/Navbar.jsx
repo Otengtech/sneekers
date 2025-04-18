@@ -15,6 +15,11 @@ const Navbar = ({ cart, userName, setUserName, userEmail, setUserEmail }) => {
 
   const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
+  const handleLinkClick = (linkPath) => {
+    setActiveLink(linkPath);
+    setMenuOpen(false); // Close mobile menu on link click
+  };
+
   return (
     <>
       {/* Navbar */}
@@ -70,7 +75,7 @@ const Navbar = ({ cart, userName, setUserName, userEmail, setUserEmail }) => {
                 toggleAccountMenu();
                 setActiveFalse();
               }}
-              className="text-orange-500 text-2xl cursor-pointer fa-solid fa-circle-user"
+              className="text-orange-500 text-xl cursor-pointer fa-solid fa-user"
             ></i>
 
             <div
@@ -88,16 +93,17 @@ const Navbar = ({ cart, userName, setUserName, userEmail, setUserEmail }) => {
                 {userEmail ? userEmail : "No email provided"}
               </div>
               <Link to="/login">
-              <button
-                onClick={() => {
-                  setUserName("");
-                  setUserEmail("");
-                }}
-                className="mt-2 py-1 px-4 bg-gray-900 text-gray-300 rounded-full"
-              >
-                Logout
-              </button></Link>
-              <Link to='/adminpanel'>
+                <button
+                  onClick={() => {
+                    setUserName("");
+                    setUserEmail("");
+                  }}
+                  className="mt-2 py-1 px-4 bg-gray-900 text-gray-300 rounded-full"
+                >
+                  Logout
+                </button>
+              </Link>
+              <Link to="/adminpanel">
                 <button className="mt-2 text-sm py-1 px-4 bg-gray-900 text-gray-300 rounded-full">
                   Dashboard
                 </button>
@@ -134,14 +140,9 @@ const Navbar = ({ cart, userName, setUserName, userEmail, setUserEmail }) => {
           ].map((link, index) => (
             <Link key={index} to={link.path}>
               <li
-                onClick={() => {
-                  setActiveLink(link.path);
-                  setMenuOpen(false);
-                }}
+                onClick={() => handleLinkClick(link.path)} // Update active link and close menu
                 className={`cursor-pointer text-gray-300 px-6 py-4 ${
-                  activeLink === link.path
-                    ? "text-orange-500 font-semibold"
-                    : ""
+                  activeLink === link.path ? "text-orange-500 font-semibold" : ""
                 }`}
               >
                 {link.label}

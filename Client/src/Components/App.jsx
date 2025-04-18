@@ -95,7 +95,7 @@ const App = () => {
                 originalProducts={originalProducts}
                 cart={cart}
                 setCart={setCart}
-                items={products};
+                items={products}
               />
             } />
             <Route path="/contact" element={<Contact />} />

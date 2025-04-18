@@ -6,14 +6,6 @@ const Cart = ({ cart, setCart }) => {
   const [loader, setLoader] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  // Load cart from localStorage on first render if available
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cartItems");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, [setCart]);
-
   // Show loader briefly
   useEffect(() => {
     setLoader(true);
@@ -21,13 +13,13 @@ const Cart = ({ cart, setCart }) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Update total + save to localStorage on cart change
   useEffect(() => {
     const total = cart.reduce(
       (acc, item) => acc + Number(item.price || 0) * (item.quantity || 1),
       0
     );
     setTotalAmount(total);
+    // Store the updated cart items in localStorage
     localStorage.setItem("cartItems", JSON.stringify(cart));
   }, [cart]);
 
@@ -73,7 +65,8 @@ const Cart = ({ cart, setCart }) => {
                 {cart.reduce((acc, item) => acc + (item.quantity || 1), 0)}
               </p>
               <p className="text-gray-800 font-semibold text-xl mt-2">
-                Total Amount: GH<i className="fa-solid fa-cedi-sign"></i> {totalAmount.toFixed(2)}
+                Total Amount: GH<i class="fa-solid fa-cedi-sign"></i>{" "}
+                {totalAmount.toFixed(2)}
               </p>
               <Link to="/checkout">
                 <button className="mt-4 py-3 px-6 text-lg rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700 transition">
@@ -110,7 +103,8 @@ const Cart = ({ cart, setCart }) => {
                     <div className="text-center text-gray-700">
                       <h2 className="text-lg font-semibold">{item.name}</h2>
                       <p className="text-orange-600 font-bold text-xl mt-2">
-                        GH<i className="fa-solid fa-cedi-sign"></i> {Number(item.price).toFixed(1)}
+                        GH<i class="fa-solid fa-cedi-sign"></i>{" "}
+                        {Number(item.price).toFixed(1)}
                       </p>
                       <span className="bg-gray-200 text-sm text-gray-700 px-4 py-2 flex items-center justify-center rounded-full">
                         Size: {item.size}
@@ -141,8 +135,15 @@ const Cart = ({ cart, setCart }) => {
                           +
                         </button>
                       </div>
-                      <div className="mt-1 text-sm text-gray-700">
-                        GH<i className="fa-solid fa-cedi-sign"></i> {((Number(item?.price) || 0) * (Number(item?.quantity) || 1)).toFixed(1)}
+                      <div
+                        value={item.price}
+                        className="mt-1 text-sm text-gray-700"
+                      >
+                        GH<i class="fa-solid fa-cedi-sign"></i>{" "}
+                        {(
+                          (Number(item?.price) || 0) *
+                          (Number(item?.quantity) || 1)
+                        ).toFixed(1)}
                       </div>
                     </div>
 

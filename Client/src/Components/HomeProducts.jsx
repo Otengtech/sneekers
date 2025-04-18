@@ -207,7 +207,7 @@ const Home = forwardRef((props, ref) => {
           What Our Customers Say
         </div>
         <div
-          className="flex overflow-x-hidden overflow-y-hidden mt-6 space-x-4 px-3 no-scrollbar cursor-grab active:cursor-grabbing"
+          className="flex overflow-x-auto overflow-y-hidden mt-6 space-x-4 px-3 no-scrollbar cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => {
             const container = e.currentTarget;
             let isDown = true;

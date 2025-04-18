@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import "../App.css"; // Make sure slide-up animation is defined here
 
 const Hero = ({ handleScrollToSneakers }) => {
   const messages = [
@@ -11,15 +12,15 @@ const Hero = ({ handleScrollToSneakers }) => {
   ];
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
+  // Cycle messages every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // Scroll animation logic
+  // Scroll reveal logic
   const revealRefs = useRef([]);
   revealRefs.current = [];
 
@@ -40,7 +41,7 @@ const Hero = ({ handleScrollToSneakers }) => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Trigger on mount
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -48,9 +49,15 @@ const Hero = ({ handleScrollToSneakers }) => {
     <div className="relative top-0 bg-[url('images/hero-wall.jpg')] bg-cover bg-center bg-no-repeat h-myScreen sm:h-screen lg:h-[calc(100vh-80px)] md:h-[calc(100vh-80px)] py-24 px-6 sm:px-10 md:px-10 flex flex-col items-center justify-center space-y-10">
       <div className="absolute inset-0 bg-black/40 z-0"></div>
 
-      <div className="relative z-10 text-center space-y-8 reveal" ref={addToRefs}>
+      <div
+        className="relative z-10 text-center space-y-8 reveal"
+        ref={addToRefs}
+      >
         <h1 className="text-5xl sm:text-5xl md:text-7xl lg:text-7xl text-orange-600 font-bold flex flex-col">
-          <span className="text-orange-00 text-5xl md:text-7xl">
+          <span
+            key={currentMessageIndex}
+            className="text-orange-00 text-5xl md:text-7xl slide-up"
+          >
             {messages[currentMessageIndex]}
           </span>
         </h1>

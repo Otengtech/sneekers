@@ -9,8 +9,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
-const AdminPanel = ({ items, setItems }) => {
+const AdminPanel = ({ items, setItems, refreshCartFromLocalStorage }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [state, setState] = useState("flex");
@@ -154,18 +155,31 @@ const AdminPanel = ({ items, setItems }) => {
 
   const handleDeleteItem = async (id) => {
     try {
+      // 1. Delete from Firebase
       await deleteDoc(doc(db, "products", id));
+
+      // 2. Remove from localStorage
+      const storedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const updatedCart = storedCart.filter((item) => item.id !== id);
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+      // 3. Refresh local cart state
+      refreshCartFromLocalStorage(); // updates UI immediately
+
+      // 4. Optional: re-fetch from Firebase if needed
+      fetchItems();
+
+      // 5. Show success toast
       toast.success("Item deleted successfully!", {
         position: "top-right",
         autoClose: 1000,
       });
-      fetchItems();
     } catch (error) {
       toast.error("Error deleting item. Try again!", {
         position: "top-right",
         autoClose: 1000,
-      }),
-        error;
+      });
+      console.error(error);
     }
   };
 
@@ -176,7 +190,7 @@ const AdminPanel = ({ items, setItems }) => {
         style={{ display: state }}
         className="fixed top-0 left-0 z-50 bg-black/90 w-full h-screen flex flex-col space-y-5 items-center justify-center text-white"
       >
-        <h1 className="text-4xl font-bold text-orange-500">
+        <h1 className="text-4xl text-center font-bold text-orange-500">
           WELCOME TO ADMIN PANEL
         </h1>
         <p className="text-lg">Enter Admin PIN to proceed</p>
@@ -189,10 +203,15 @@ const AdminPanel = ({ items, setItems }) => {
         />
         <button
           onClick={verifyPin}
-          className="px-6 py-2 bg-orange-500 rounded-full hover:bg-orange-600 transition"
+          className="px-6 py-2 bg-orange-500 rounded-full hover:bg-orange-600 cursor-pointer transition"
         >
           Verify
         </button>
+        <Link to="/"><div
+          className="px-6 py-2 bg-white text-black rounded-full cursor-pointer transition"
+        >
+          Back
+        </div></Link>
       </div>
 
       {/* Dashboard Summary */}
@@ -202,7 +221,7 @@ const AdminPanel = ({ items, setItems }) => {
           <p>Products Available</p>
         </div>
         <div className="bg-orange-400 text-white p-6 rounded-xl shadow">
-          <p className="text-xl font-semibold">$ {totalAmount}</p>
+          <p className="text-xl font-semibold">GH<i class="fa-solid fa-cedi-sign"></i>{totalAmount}</p>
           <p>Total Items Value</p>
         </div>
       </div>
@@ -221,40 +240,40 @@ const AdminPanel = ({ items, setItems }) => {
             placeholder="Item Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+            className="col-span-1 focus:outline-none border border-gray-400 px-6 py-3 rounded-full"
           />
           <input
             type="text"
             placeholder="Price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+            className="col-span-1 focus:outline-none border border-gray-400 px-6 py-3 rounded-full"
           />
           <input
             type="text"
             placeholder="Type"
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+            className="col-span-1 focus:outline-none border border-gray-400 px-6 py-3 rounded-full"
           />
           <input
             type="text"
             placeholder="Size"
             value={size}
             onChange={(e) => setSize(e.target.value)}
-            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+            className="col-span-1 focus:outline-none border border-gray-400 px-6 py-3 rounded-full"
           />
           <input
             type="text"
             placeholder="Gender"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+            className="col-span-1 focus:outline-none border border-gray-400 px-6 py-3 rounded-full"
           />
           <input
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
-            className="col-span-1 focus:outline-none border px-6 py-3 rounded-full"
+            className="col-span-1 focus:outline-none border border-gray-400 px-6 py-3 rounded-full"
           />
           <button
             type="submit"
@@ -290,7 +309,7 @@ const AdminPanel = ({ items, setItems }) => {
                   Size: {item.size}
                 </span>
                 <p className="text-gray-700">
-                  ${Number(item.price).toFixed(2)}
+                GH<i class="fa-solid fa-cedi-sign"></i>{Number(item.price).toFixed(2)}
                 </p>
                 <div className="flex space-x-4 mt-3">
                   <button

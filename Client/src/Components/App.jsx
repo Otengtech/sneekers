@@ -19,8 +19,8 @@ import AdminPanel from "./AdminPanel.jsx";
 const App = () => {
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [loader, setLoader] = useState(true);
   const [review, setReview] = useState([]);
 
@@ -62,7 +62,10 @@ const App = () => {
           ...doc.data(),
         }));
         setProducts(items);
-        localStorage.setItem("cartItems",JSON.stringify(items));
+        // Set only cart items in localStorage
+        const storedCart = localStorage.getItem("cartItems");
+        const initialCart = storedCart ? JSON.parse(storedCart) : [];
+        setCart(initialCart);
         setOriginalProducts(items);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -74,44 +77,77 @@ const App = () => {
 
   return (
     <Router>
-      {loader ? <Loader /> : (
+      {loader ? (
+        <Loader />
+      ) : (
         <div className="scroll-smooth">
-          <Navbar cart={cart} setCart={setCart} userEmail={userEmail} setUserEmail={setUserEmail} setUserName={setUserName}
-           userName={userName}/>
+          <Navbar
+            cart={cart}
+            setCart={setCart}
+            userEmail={userEmail}
+            setUserEmail={setUserEmail}
+            setUserName={setUserName}
+            userName={userName}
+          />
           <Routes>
-            <Route path="/" element={
-              <>
-                <Hero handleScrollToSneakers={handleScrollToSneakers} />
-                {/* <div className="h-[500px]" /> */}
-                <HomeProducts ref={sneakersSectionRef}/>
-                <Footer />
-              </>
-            } />
-            <Route path="/allsneakers" element={
-              <AllSneakers 
-                products={products}
-                updateProducts={setProducts}
-                resetProducts={() => setProducts(originalProducts)}
-                originalProducts={originalProducts}
-                cart={cart}
-                setCart={setCart}
-                items={products}
-              />
-            } />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero handleScrollToSneakers={handleScrollToSneakers} />
+                  {/* <div className="h-[500px]" /> */}
+                  <HomeProducts ref={sneakersSectionRef} />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/allsneakers"
+              element={
+                <AllSneakers
+                  products={products}
+                  updateProducts={setProducts}
+                  resetProducts={() => setProducts(originalProducts)}
+                  originalProducts={originalProducts}
+                  cart={cart}
+                  setCart={setCart}
+                  items={products}
+                />
+              }
+            />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/adminpanel" element={<AdminPanel items={products} setItems={setProducts}
-            refreshCartFromLocalStorage={refreshCartFromLocalStorage} />} />
+            <Route
+              path="/adminpanel"
+              element={
+                <AdminPanel
+                  items={products}
+                  setItems={setProducts}
+                  refreshCartFromLocalStorage={refreshCartFromLocalStorage}
+                />
+              }
+            />
             <Route path="/checkout" element={<CheckOut />} />
-            <Route path="/about" element={<About review={review} setReviews={setReview} />} />
+            <Route
+              path="/about"
+              element={<About review={review} setReviews={setReview} />}
+            />
             <Route path="/policy" element={<Policy />} />
-            <Route path="/login" element={<Login setUserName={setUserName} setUserEmail={setUserEmail} />} />
-            <Route path="/cart" element={
-              <Cart
-                originalProducts={originalProducts}
-                setCart={setCart}
-                cart={cart}
-              />
-            } />
+            <Route
+              path="/login"
+              element={
+                <Login setUserName={setUserName} setUserEmail={setUserEmail} />
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  originalProducts={originalProducts}
+                  setCart={setCart}
+                  cart={cart}
+                />
+              }
+            />
           </Routes>
         </div>
       )}

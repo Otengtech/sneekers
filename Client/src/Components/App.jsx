@@ -34,6 +34,12 @@ const App = () => {
     const storedCart = localStorage.getItem("cartItems");
     return storedCart ? JSON.parse(storedCart) : [];
   });
+
+  // This lets any component re-sync from localStorage
+  const refreshCartFromLocalStorage = () => {
+    const updatedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+    setCart(updatedCart);
+  };
   const sneakersSectionRef = useRef(null);
 
   const handleScrollToSneakers = () => {
@@ -56,6 +62,7 @@ const App = () => {
           ...doc.data(),
         }));
         setProducts(items);
+        localStorage.setItem("cartItems",JSON.stringify(items));
         setOriginalProducts(items);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -92,7 +99,8 @@ const App = () => {
               />
             } />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/adminpanel" element={<AdminPanel items={products} setItems={setProducts} />} />
+            <Route path="/adminpanel" element={<AdminPanel items={products} setItems={setProducts}
+            refreshCartFromLocalStorage={refreshCartFromLocalStorage} />} />
             <Route path="/checkout" element={<CheckOut />} />
             <Route path="/about" element={<About review={review} setReviews={setReview} />} />
             <Route path="/policy" element={<Policy />} />

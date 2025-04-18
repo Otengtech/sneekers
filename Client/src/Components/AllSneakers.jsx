@@ -356,9 +356,6 @@ const AllSneakers = ({
                           : "fa-regular text-gray-900"
                       }`}
                     ></i>
-                    <span className="absolute bottom-2 left-4 text-sm text-gray-700">
-                      {likeCounts[item.id] || 0} people like(s) this
-                    </span>
                   </div>
 
                   <div className="w-full md:w-1/2 py-10 px-4 flex flex-col items-center justify-between">

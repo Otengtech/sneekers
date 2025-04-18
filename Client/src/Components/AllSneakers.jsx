@@ -350,7 +350,7 @@ const AllSneakers = ({
                     </div>
                     <i
                       onClick={() => toggleFavorite(item)}
-                      className={`absolute top-6 md:ml-8 lg:ml-8 left-10 text-2xl cursor-pointer fa-star ${
+                      className={`absolute top-6 left-16 md:ml-8 lg:ml-8 md:left-10 lg:left-10 text-2xl cursor-pointer fa-star ${
                         favorites.some((f) => f.id === item.id)
                           ? "fa-solid text-orange-400"
                           : "fa-regular text-gray-900"

@@ -23,7 +23,7 @@ const Home = forwardRef((props, ref) => {
       });
       return;
     }
-    if (!email.trim().toLocaleLowerCase().includes("@")) {
+    if (!email.trim().toLowerCase().includes("@")) {
       toast.error("Enter a valid email", {
         position: "top-right",
         autoClose: 1000,
@@ -82,9 +82,7 @@ const Home = forwardRef((props, ref) => {
       <div className="py-16 px-10 text-center">
         <h2 className="text-5xl font-bold text-gray-800">Who We Are</h2>
         <p className="text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
-          We bring you a collection of high-quality, stylish footwear that
-          ensures both comfort and elegance. Our designs are inspired by modern
-          trends while prioritizing durability and affordability.
+          We bring you a collection of high-quality, stylish footwear that ensures both comfort and elegance. Our designs are inspired by modern trends while prioritizing durability and affordability.
         </p>
       </div>
 
@@ -159,7 +157,6 @@ const Home = forwardRef((props, ref) => {
                 key={item.id}
                 className="flex flex-col sm:flex-row bg-white shadow-xl shadow-gray-300 rounded-2xl overflow-hidden transition hover:scale-[1.01] duration-300"
               >
-                {/* Product Image */}
                 <div className="w-full sm:w-1/2 h-64 sm:h-auto bg-gray-100 flex items-center justify-center">
                   <img
                     src={`images/${item.img}`}
@@ -167,41 +164,30 @@ const Home = forwardRef((props, ref) => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-
-                {/* Product Info */}
                 <div className="w-full sm:w-1/2 p-6 flex space-y-3 flex-col justify-center items-center text-center sm:text-left">
                   <div className="text-center">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      {item.name}
-                    </h2>
-                    <p className="text-sm text-gray-500 mt-1 capitalize">
-                      {item.type} • {item.gender}
-                    </p>
+                    <h2 className="text-2xl font-semibold text-gray-800">{item.name}</h2>
+                    <p className="text-lg text-gray-500 mt-1 capitalize">{item.type} • {item.gender}</p>
                   </div>
 
-                  <div className="">
-                    {/* Rating */}
+                  <div>
                     <div className="flex justify-center sm:justify-start text-orange-500 mb-2 space-x-1">
                       {[...Array(5)].map((_, i) => (
-                        <i key={i} className="fa-solid fa-star"></i>
+                        <i key={i} className="text-xl fa-solid fa-star"></i>
                       ))}
                     </div>
-
-                    {/* Size and Price */}
                     <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3">
-                      <span className="bg-gray-200 text-xs text-gray-700 px-2 py-1 rounded-full">
+                      <span className="bg-gray-200 text-sm text-gray-700 px-2 py-1 rounded-full">
                         Size: {item.size}
                       </span>
                       <span className="text-lg font-bold text-gray-800">
-                        ${item.prize}
+                      GH<i class="fa-solid fa-cedi-sign"></i> {item.prize}
                       </span>
                     </div>
                   </div>
 
-                  <div className="text-center">Get it in our shop</div>
-
-                  {/* CTA */}
-                  <div className="">
+                  <div className="text-lg text-center">Get it in our shop</div>
+                  <div>
                     <Link to="/allsneakers">
                       <button className="flex items-center gap-2 px-5 py-2 bg-orange-500 text-black text-sm rounded-full hover:bg-orange-400 transition">
                         <i className="fa-solid fa-bag-shopping"></i> Go to shop
@@ -216,12 +202,12 @@ const Home = forwardRef((props, ref) => {
       </div>
 
       {/* Customer Testimonials */}
-      <div className="py-16 px-4 md:px-8 bg-white text-center">
+      <div className="py-16 px-10 bg-white text-center">
         <div className="text-4xl md:text-6xl font-bold mb-8 text-gray-800">
           What Our Customers Say
         </div>
         <div
-          className="r flex overflow-x-auto mt-6 space-x-4 px-4 no-scrollbar cursor-grab active:cursor-grabbing"
+          className="flex overflow-x-hidden overflow-y-hidden mt-6 space-x-4 px-3 no-scrollbar cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => {
             const container = e.currentTarget;
             let isDown = true;
@@ -251,62 +237,60 @@ const Home = forwardRef((props, ref) => {
           ) : (
             reviews.map((item) => (
               <div key={item.id} className="shrink-0">
-                <div className="p-5 w-96 text-start rounded-lg bg-black my-3">
+                <div className="p-5 w-96 text-start rounded-lg bg-gray-900 my-3">
                   <div className="text-white text-xl">{item.name}</div>
                   <div className="text-orange-600 text-md">{item.email}</div>
                   <p className="my-4 text-white w-full">{item.message}</p>
                   <div className="flex items-center justify-start space-x-2 my-3 text-xl text-orange-600">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
+                    {[...Array(5)].map((_, i) => (
+                      <i key={i} className="fa-solid fa-star"></i>
+                    ))}
                   </div>
+                  <div className="text-gray-400 text-xs">{item.timestamp?.toDate().toLocaleString()}</div>
                 </div>
               </div>
             ))
           )}
         </div>
       </div>
-      <div className="">
-        <div className="text-3xl sm:text-5xl lg:text-6xl mt-10 text-gray-900 font-bold text-center">
-          Want to give us a review?
-        </div>
-        {/* Review Form */}
-        <div className="max-w-2xl mx-auto mt-16 px-6">
-          <form className="p-8 space-y-6">
-            <h2 className="text-center text-2xl sm:text-3xl font-bold text-orange-500 mb-6">
-              Send a Review
-            </h2>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your Name"
-              className="w-full px-6 py-4 border border-gray-400 rounded-full bg-transparent text-gray-600 focus:outline-none placeholder:text-md placeholder-gray-400"
-            />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your Email"
-              className="w-full px-6 py-4 border border-gray-400 rounded-full bg-transparent text-gray-600 focus:outline-none placeholder:text-md placeholder-gray-400"
-            />
-            <textarea
-              rows="4"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Your Review"
-              className="w-full p-4 border border-gray-400 rounded-3xl bg-transparent text-gray-600 focus:outline-none placeholder-gray-400"
-            ></textarea>
-            <button
-              onClick={addReview}
-              className="w-full bg-orange-500 text-gray-900 p-4 rounded-full text-md transition hover:bg-orange-600"
-            >
-              Send Review
-            </button>
-          </form>
-        </div>
+
+      {/* Review Form */}
+      <div className="text-3xl sm:text-5xl lg:text-6xl mt-10 text-gray-900 font-bold text-center">
+        Want to give us a review?
+      </div>
+      <div className="max-w-2xl mx-auto mt-16 px-6">
+        <form className="p-8 space-y-6">
+          <h2 className="text-center text-2xl sm:text-3xl font-bold text-orange-500 mb-6">
+            Send a Review
+          </h2>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your Name"
+            className="w-full px-6 py-4 border border-gray-400 rounded-full bg-transparent text-gray-600 focus:outline-none placeholder:text-md placeholder-gray-400"
+          />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Your Email"
+            className="w-full px-6 py-4 border border-gray-400 rounded-full bg-transparent text-gray-600 focus:outline-none placeholder:text-md placeholder-gray-400"
+          />
+          <textarea
+            rows="4"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Your Review"
+            className="w-full p-4 border border-gray-400 rounded-3xl bg-transparent text-gray-600 focus:outline-none placeholder-gray-400"
+          ></textarea>
+          <button
+            onClick={addReview}
+            className="w-full bg-orange-500 text-gray-900 p-4 rounded-full text-md transition hover:bg-orange-600"
+          >
+            Send Review
+          </button>
+        </form>
       </div>
 
       {/* Why Choose Us */}

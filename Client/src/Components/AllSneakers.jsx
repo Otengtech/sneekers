@@ -16,7 +16,7 @@ const AllSneakers = ({
   const [loader, setLoader] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 4;
+  const productsPerPage = 10;
 
   const handleImageClick = (product) => {
     setSelectedProduct(product);

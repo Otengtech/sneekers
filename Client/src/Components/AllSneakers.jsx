@@ -306,7 +306,7 @@ const AllSneakers = ({
               {currentProducts.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-row bg-white shadow-xl rounded-2xl overflow-hidden transition hover:scale-[1.02] duration-300"
+                  className="flex flex-row bg-white shadow-xl shadow-gray-400 rounded-2xl overflow-hidden transition hover:scale-[1.02] duration-300"
                 >
                   <div className="w-full relative md:w-1/2 bg-gray-100 flex items-center justify-center">
                     <img
@@ -320,40 +320,26 @@ const AllSneakers = ({
                       className="w-40 h-40 md:w-full md:h-full lg:w-full lg:h-full object-cover cursor-pointer"
                     />
                     <div className="absolute top-4 left-6 flex flex-col items-center">
-                      <div className="flex items-center justify-center">
+                      <div className="flex flex-col items-center justify-center">
                         <i
                           onClick={() => toggleLike(item.id)}
-                          className={` fa-solid fa-thumbs-up text-xl cursor-pointer ${
+                          className={` fa-solid fa-heart text-xl cursor-pointer ${
                             userReactions[item.id] === "liked"
                               ? "text-orange-600"
-                              : "text-gray-900"
+                              : "text-orange-500"
                           }`}
                         ></i>
-                        <span className="text-sm ml-2">
+                        <span className="text-sm">
                           {likeCounts[item.id] || 0}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center justify-center">
-                        <i
-                          onClick={() => toggleDislike(item.id)}
-                          className={`fa -solid fa-thumbs-down text-xl cursor-pointer ${
-                            userReactions[item.id] === "disliked"
-                              ? "text-orange-600"
-                              : "text-gray-900"
-                          }`}
-                        ></i>
-                        <span className="text-sm ml-2">
-                          {dislikeCounts[item.id] || 0}
                         </span>
                       </div>
                     </div>
                     <i
                       onClick={() => toggleFavorite(item)}
-                      className={`absolute top-6 left-16 md:ml-8 lg:ml-8 md:left-10 lg:left-10 text-2xl cursor-pointer fa-star ${
+                      className={`absolute top-3 left-14 md:ml-3 lg:ml-3 md:left-10 lg:left-10 text-2xl cursor-pointer fa-star ${
                         favorites.some((f) => f.id === item.id)
                           ? "fa-solid text-orange-400"
-                          : "fa-regular text-gray-900"
+                          : "fa-regular text-orange-500"
                       }`}
                     ></i>
                   </div>

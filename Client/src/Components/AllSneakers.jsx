@@ -6,7 +6,7 @@ import {
   setDoc,
   getDocs
 } from "firebase/firestore";
-import { db } from "./firebase"; // Firestore instance from firebase.jsx
+import { db } from "./Components/firebase"; // Firestore instance from firebase.jsx
 import Loader from "./Loader";
 import Footer from "./Footer";
 import { toast, ToastContainer } from "react-toastify";

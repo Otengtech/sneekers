@@ -11,6 +11,9 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json())
 
+app.get('/', (req, res) => {
+  res.send('Backend server is running!');
+});
 
 app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
@@ -66,7 +69,6 @@ app.post("/subscribe", async (req, res) => {
     res.status(500).json({ message: "Subscription failed." });
   }
 });
-
 
 app.listen(PORT, () => console.log(`listening to port ${PORT}`))
 
